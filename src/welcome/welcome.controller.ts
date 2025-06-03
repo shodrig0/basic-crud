@@ -1,9 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 @Controller()
 export class WelcomeController {
     @Get('/')
-    index() {
-        return 'Welcome to Basic-CRUD'
+    index(@Req() request: Request, @Res() response: Response) {
+        response.status(200).send('Welcome to a Basic Crud in Nestjs') // or .json({})
+        console.log(request.url)
     }
 }

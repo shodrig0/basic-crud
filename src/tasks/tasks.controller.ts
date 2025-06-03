@@ -1,15 +1,41 @@
-import { Controller, Get } from '@nestjs/common';
-import { TasksService } from './tasks.service';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { TasksService } from './tasks.service'
+import { CreateTaskDTO } from './DTO/create-task.dto';
+import { UpdateTaskDTO } from './DTO/update-task.dto';
 
-@Controller({})
+@Controller('/tasks')
 export class TasksController {
-    tasksService: TasksService
-    constructor(tasksService: TasksService) {
-        this.tasksService = tasksService
+    constructor(private tasksService: TasksService) { }
+
+    @Get()
+    getAllTasks(@Query() query: any) { // change any
+        // console.log(query)
+        return this.tasksService.getTasks()
     }
 
-    @Get('/tasks')
-    getAllTasks() {
-        return this.tasksService.getTasks()
+    @Get('/:id')
+    getTask(@Param('id') id: string) {
+        return this.tasksService.getTask(Number(id))
+    }
+
+    @Post()
+    @UsePipes(new ValidationPipe())
+    createTasks(@Body() task: CreateTaskDTO) {
+        return this.tasksService.createTasks(task)
+    }
+
+    @Put()
+    updateTasks(@Body() task: UpdateTaskDTO) {
+        return this.tasksService.updateTasks(task)
+    }
+
+    @Patch()
+    updateTasksStatus() {
+        return this.tasksService.updateTasksStatus()
+    }
+
+    @Delete()
+    deleteTasks() {
+        return this.tasksService.deleteTasks()
     }
 }
