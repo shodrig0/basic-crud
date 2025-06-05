@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { TasksService } from './tasks.service'
 import { CreateTaskDTO } from './DTO/create-task.dto';
 import { UpdateTaskDTO } from './DTO/update-task.dto';
@@ -8,7 +8,7 @@ export class TasksController {
     constructor(private tasksService: TasksService) { }
 
     @Get()
-    getAllTasks(@Query() query: any) { // change any
+    getAllTasks() { // change any
         // console.log(query)
         return this.tasksService.getTasks()
     }
@@ -19,7 +19,6 @@ export class TasksController {
     }
 
     @Post()
-    @UsePipes(new ValidationPipe())
     createTasks(@Body() task: CreateTaskDTO) {
         return this.tasksService.createTasks(task)
     }
